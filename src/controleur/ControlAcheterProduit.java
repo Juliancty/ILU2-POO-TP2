@@ -21,13 +21,23 @@ public class ControlAcheterProduit {
 		return village.trouverHabitant(nomAcheteur) != null;
 	}
 	
-	public Gaulois[] rechercherVendeursProduit(String produit) {
-		return village.rechercherVendeursProduit(produit);
+	public String[] rechercherVendeursProduit(String produit) {
+		Gaulois[] vendeurs = village.rechercherVendeursProduit(produit);
+		String[] stringVendeurs = null;
+		if(vendeurs != null) {
+			stringVendeurs = new String[vendeurs.length];
+			for(int i = 0; i < vendeurs.length; i++) {
+				stringVendeurs[i] = vendeurs[i].getNom();
+			}
+		}
+		return stringVendeurs;
 	}
 	
 	public int acheterProduit(String nomVendeur, int quantite) {
-		Etal etal = controlTrouverEtalVendeur.trouverEtalVendeur(nomVendeur);
-		int quantiteAcheter = etal.acheterProduit(quantite);
-		return quantiteAcheter;
+		if(controlVerifierIdentite.verifierIdentite(nomVendeur)) {
+			Etal etal = controlTrouverEtalVendeur.trouverEtalVendeur(nomVendeur);
+			return etal.acheterProduit(quantite);
+		}
+		return 0;
 	}
 }
